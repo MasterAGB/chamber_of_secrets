@@ -25,27 +25,22 @@ class VaultOperations():
     # This will be part of the class where create_new_vault is defined
     def create_new_vault(self):
 
-        print("1231");
         login = registry.get_main_window().new_login_input.text().strip()
         password = registry.get_main_window().new_password_input.text().strip()
 
-        print("1232");
         # Validate input
         if not login or not password:
             QMessageBox.critical(None, 'Error', 'Login and password fields must not be empty.')
             return
 
-        print("123");
         # Check for existing vault
         existing_data = registry.get_immu_db().get_user_data_from_database(login)
         if existing_data and existing_data.get('revisions', []):
             QMessageBox.critical(None, 'Error', 'A vault with this login already exists.')
             return
 
-        print("123-secure key")
         key = self.generate_secure_key()
 
-        print("create_new_vault")
         response_json = registry.get_immu_db().save_new_vault(login, password, key)
 
         # Handle the response
@@ -57,24 +52,17 @@ class VaultOperations():
         print("newu_ser_id=" + newu_ser_id)
         registry.set_userid(newu_ser_id)
 
-        print("QFileDialog")
         # Save the key to a file
         default_file_name = f"{login}_key.txt"
-        print("QFileDialog")
         file_name, _ = QFileDialog.getSaveFileName(None, "Save Key File", default_file_name,
                                                    "Text Files (*.txt);;All Files (*)")
-        print("QFileDialog")
         if file_name:
             with open(file_name, "w") as f:
                 f.write(key)
 
-        print("QFileDialog")
 
-        print("Success")
-        # Display success message
-        response_text = json.dumps(response_json, indent=4)
-        QMessageBox.information(None, 'Success',
-                                f'Successfully created the vault. Your ID is: {registry.get_userid()}. Server Response:\n{response_text}')
+        #response_text = json.dumps(response_json, indent=4)
+        #QMessageBox.information(None, 'Success', f'Successfully created the vault. Your ID is: {registry.get_userid()}. Server Response:\n{response_text}')
         self.display_user_table()
 
     def display_login_screen(self):
@@ -83,17 +71,11 @@ class VaultOperations():
         registry.get_main_window().show()
 
     def display_user_table(self):
-
-        print("display_user_table")
         # Hide the main window
         registry.get_main_window().hide()
-        print("hidden window")
 
-        print("generated table")
         registry.get_immu_db().load_table_from_database()  # Populate the table after showing it
-        print("loaded table")
         registry.get_user_password_table().show()
-        print("showed table")
 
     def access_user_vault(self, key_from_file):
         try:
@@ -120,17 +102,15 @@ class VaultOperations():
             password_from_db = document.get('password')
             key_from_db = document.get('key')
 
-            response_text = json.dumps(stored_data, indent=4)
-            QMessageBox.information(None, 'Checking response',
-                                    f'Successfully checked the vault. Server Response:\n{response_text}')
+            #response_text = json.dumps(stored_data, indent=4)
+            #QMessageBox.information(None, 'Checking response',f'Successfully checked the vault. Server Response:\n{response_text}')
 
             if login_from_db == login and password_from_db == password and key_from_db == key:
                 registry.set_userid(document.get('_id', 'Unknown'))
                 print("User id from data:" + registry.get_userid())
                 print(stored_data)
-                response_text = json.dumps(stored_data, indent=4)
-                QMessageBox.information(None, 'Success',
-                                        f'Successfully accessed the vault. ID is: {registry.get_userid()}. Response:\n{response_text}')
+                #response_text = json.dumps(stored_data, indent=4)
+                #QMessageBox.information(None, 'Success',f'Successfully accessed the vault. ID is: {registry.get_userid()}. Response:\n{response_text}')
                 self.display_user_table()
             else:
                 QMessageBox.critical(None, 'Failure', 'Failed to access the vault. Invalid credentials or key.')

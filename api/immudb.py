@@ -122,12 +122,12 @@ class ImmuDB():
                 }
             ]
         }
-        print("sending data:");
-        print(data);
+        # print("sending data:");
+        # print(data);
         response_json = self.save_data_to_database(data)
 
-        print("Got response:");
-        print(response_json);
+        # print("Got response:");
+        # print(response_json);
 
         if 'documentId' not in response_json:
             QMessageBox.critical(None, 'Error', 'Failed to create a new vault.')
@@ -135,7 +135,7 @@ class ImmuDB():
 
         registry.set_userid(response_json.get('documentId', 'Unknown'))
 
-        print(f"Created user_id: {registry.get_userid()}")
+        # print(f"Created user_id: {registry.get_userid()}")
 
         # Now that the vault is successfully created, save the key to a file
         options = QFileDialog.Options()
@@ -318,16 +318,16 @@ class ImmuDB():
         if not self.check_for_existing_records():
             # Your existing code
             update_result = self.modify_collection_schema()
-            if update_result:
-                print(json.dumps(update_result, indent=4))
-            else:
+            #print(json.dumps(update_result, indent=4))
+            if not update_result:
                 print("Failed to update collection fields.")
 
+
             index_result = self.create_unique_field_index('login')
-            if index_result:
-                print(json.dumps(index_result, indent=4))
-            else:
+            # print(json.dumps(index_result, indent=4))
+            if not index_result:
                 print("Failed to create unique index.")
+
 
     def replace_records(self, existing_data, user_id):
         # Step 3: Update the document with the merged data

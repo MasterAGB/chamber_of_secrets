@@ -46,8 +46,8 @@ class MainWindowWidget(QWidget):
         self.key_file_button.clicked.connect(registry.get_vault_operations().read_key_from_file)
         layout.addWidget(self.key_file_button)
 
-        self.developer_button = QPushButton("Developer: open table")
-        self.developer_button.clicked.connect(registry.get_vault_operations().display_user_table)
-        layout.addWidget(self.developer_button)
+        # self.developer_button = QPushButton("Developer: open table")
+        # self.developer_button.clicked.connect(registry.get_vault_operations().display_user_table)
+        # layout.addWidget(self.developer_button)
 
         self.setLayout(layout)
