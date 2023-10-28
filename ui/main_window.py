@@ -26,6 +26,7 @@ class MainWindowWidget(QWidget):
         layout.addWidget(self.new_login_input)
 
         self.new_password_input = QLineEdit()
+        self.new_password_input.setEchoMode(QLineEdit.EchoMode.Password)
         layout.addWidget(self.new_password_input)
 
         self.create_vault_button = QPushButton("Create Vault 🔒")
@@ -40,6 +41,7 @@ class MainWindowWidget(QWidget):
         layout.addWidget(self.existing_login_input)
 
         self.existing_password_input = QLineEdit()
+        self.existing_password_input.setEchoMode(QLineEdit.EchoMode.Password)
         layout.addWidget(self.existing_password_input)
 
         self.key_file_button = QPushButton("Load Key & Access Vault 🔑")
